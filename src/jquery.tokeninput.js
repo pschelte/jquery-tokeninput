@@ -57,6 +57,7 @@
     allowFreeTagging: false,
     allowTabOut: false,
     autoSelectFirstResult: false,
+    allowBackspaceDeletion: true,
 
     // Callbacks
     onResult: null,
@@ -328,7 +329,9 @@
 
                       if (this.value.length === 0) {
                         if (selected_token) {
-                          delete_token($(selected_token));
+			  if ($(input).data("settings").allowBackspaceDeletion) {
+                            delete_token($(selected_token));
+			  }	    
                           hiddenInput.change();
                         } else if(previous_token.length) {
                           select_token($(previous_token.get(0)));
@@ -496,7 +499,7 @@
 
       this.clear = function() {
           token_list.children("li").each(function() {
-              if ($(this).children("input").length === 0) {
+              if ($(this).children("input[type='text']").length === 0) {
                   delete_token($(this));
               }
           });
@@ -508,7 +511,7 @@
 
       this.remove = function(item) {
           token_list.children("li").each(function() {
-              if ($(this).children("input").length === 0) {
+              if ($(this).children("input[type='text']").length === 0) {
                   var currToken = $(this).data("tokeninput");
                   var match = true;
                   for (var prop in item) {
